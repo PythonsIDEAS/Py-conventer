@@ -1,16 +1,38 @@
-# This is a sample Python script.
+import docx2python
+import docx2txt
+from pdf2txt import PDF2Text
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def convert_docx_to_text(docx_file_path):
+    data = docx2python.docx2python(docx_file_path)
+    text = ""
+    for paragraph in data.body:
+        if paragraph['type'] == 'paragraph':
+            text += paragraph['content'] + "\n"
+    return text
 
+def convert_doc_to_text(doc_file_path):
+    text = docx2txt.process(doc_file_path)
+    return text
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def convert_pdf_to_text(pdf_file_path):
+    p2t = PDF2Text()
+    text = p2t.extract(pdf_file_path)
+    return text
 
+if __name__ == "__main__":
+    # Replace these file paths with your input files
+    docx_file_path = "path/to/your/document.docx"
+    doc_file_path = "path/to/your/document.doc"
+    pdf_file_path = "path/to/your/document.pdf"
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    # Convert DOCX to text
+    docx_text = convert_docx_to_text(docx_file_path)
+    print("DOCX Text:\n", docx_text)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # Convert DOC to text
+    doc_text = convert_doc_to_text(doc_file_path)
+    print("DOC Text:\n", doc_text)
+
+    # Convert PDF to text
+    pdf_text = convert_pdf_to_text(pdf_file_path)
+    print("PDF Text:\n", pdf_text)
